@@ -45,9 +45,14 @@ function Header() {
                     <span className="header__optionLineTwo">Prime</span>
                 </div>
 
-                {/* New HOC Examples Link */}
+                {/* HOC Examples Links */}
                 <Link to='/hoc-examples' className="header__option">
-                    <span className="header__optionLineOne">React</span>
+                    <span className="header__optionLineOne">Basic</span>
+                    <span className="header__optionLineTwo">HOC Demo</span>
+                </Link>
+
+                <Link to='/improved-hoc-examples' className="header__option">
+                    <span className="header__optionLineOne">Enhanced</span>
                     <span className="header__optionLineTwo">HOC Demo</span>
                 </Link>
 
