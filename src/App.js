@@ -1,53 +1,94 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
-import { Header } from './Header';
-import { Home } from './Home';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Checkout } from './Checkout';
-import { Login } from './Login';
-import { useEffect } from 'react';
-import { auth } from './Firebase';
-import { useStateValue } from './StateProvider';
-import { Payment } from './Payment';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
 
-const promise = loadStripe('pk_test_51LuEVdSBac3jzOzMrVq3Z4SdSpLw0UC6HDZMN2iObQxZJnlAGd0ULOCmfiPqakz1QPpm9vDfHxaTd8oW4IymrY6M00OYugYunt');
+// Import existing components
+import Header from './Header';
+import Home from './Home';
+import Checkout from './Checkout';
+import Login from './Login';
+import Payment from './Payment';
+
+// Import HOC Examples
+import HOCExample from './HOCExample';
+
+// Import context
+import { useStateValue } from './StateProvider';
 
 function App() {
-  const [{ basket, user }, dispatch] = useStateValue();
-  useEffect(() => {
-    auth.onAuthStateChanged(authUser => {
-      if (authUser) {
-        dispatch({
-          type: "SET_USER",
-          user: authUser
-        })
+  const [{ user }, dispatch] = useStateValue();
 
-      } else {
-        dispatch({
-          type: "SET_USER",
-          user: null
-        })
-      }
-    })
-  }, [])
   return (
-    <div className="App">
-      <Router>
+    <Router>
+      <div className="app">
         <Routes>
-          <Route path='/login' element={<Login />} ></Route>
-          <Route path='/' element={<><Header /><Home /></>} />
-          <Route path='/checkout' element={<><Header /><Checkout /></>} />
-          <Route path='/payment' element={<><Header />
-            <Elements stripe={promise}>
-              <Payment />
-            </Elements>
-          </>} />
+          <Route 
+            path="/" 
+            element={
+              <>
+                <Header />
+                <Home />
+              </>
+            } 
+          />
+          <Route 
+            path="/checkout" 
+            element={
+              <>
+                <Header />
+                <Checkout />
+              </>
+            } 
+          />
+          <Route 
+            path="/login" 
+            element={<Login />} 
+          />
+          <Route 
+            path="/payment" 
+            element={
+              <>
+                <Header />
+                <Payment />
+              </>
+            } 
+          />
+          {/* New HOC Examples Route */}
+          <Route 
+            path="/hoc-examples" 
+            element={
+              <>
+                <div style={{
+                  backgroundColor: '#232f3e',
+                  padding: '10px 20px',
+                  color: 'white',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}>
+                  <Link 
+                    to="/" 
+                    style={{
+                      color: 'white',
+                      textDecoration: 'none',
+                      fontSize: '18px',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    ← Back to Amazon Clone
+                  </Link>
+                  <h1 style={{ margin: 0, fontSize: '20px' }}>
+                    React HOC Examples
+                  </h1>
+                </div>
+                <HOCExample />
+              </>
+            } 
+          />
         </Routes>
-      </Router>
-
-
-    </div>
+      </div>
+    </Router>
   );
 }
+
 export default App;
